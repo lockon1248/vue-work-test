@@ -2,14 +2,19 @@ import axios from 'axios';
 import { LALE_API_URL, ORGTREE_API_URL } from './setting';
 
 const laleReq = axios.create({
+	//創一個axios實例並設定好開發環境
 	baseURL: process.env.NODE_ENV === 'production' ? window.__env.url.BASE_HOST : '/baseProxy',
 });
 laleReq.interceptors.request.use((res) => {
+	// 在laleReq實例裡面設定阻攔器加上相對應的標頭和給予token
 	res.url = LALE_API_URL + res.url;
+	// 下面這句話不是很懂，但如果在阻攔器裡面這樣寫的話，header是不是就會自動加上token?
 	res.headers.Authorization = `Bearer ${token}`;
 	return res;
 });
 
+
+// 以下是和剛剛相同的orgTreeReq axios實例創建
 const orgTreeReq = axios.create({
 	baseURL: process.env.NODE_ENV === 'production' ? window.__env.url.BASE_HOST : '/baseProxy',
 });
@@ -22,6 +27,7 @@ baseReq.interceptors.request.use((res) => {
 // 取得組織樹
 const getOrgTree = async (companyId) => {
 	const res = await orgTreeReq.get(`/dau/org-tree/info`,{
+		// 簡化掉多餘重複的url前綴並將method移到前面，header的token在阻攔器設定好了所以也不需要在這邊寫
 		params: { companyId },
 	});
 	return res;
@@ -79,3 +85,7 @@ const setAnnouncement = async (data, header) => {
 };
 
 export { getOrgTree, getAllCompany, getAllMember, createRoom, updateRoomName, updateRoomImage, setAnnouncement};
+
+// 問題:
+// 若是LALE_API_URL，token固定使用window.laleToken，若是ORGTREE_API_URL，token固定使用window.afToekn，不用傳入參數的方式。
+// 我看不懂上面這句話是甚麼意思

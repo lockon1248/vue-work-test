@@ -112,3 +112,12 @@ export {
   updateRoomImage,
   setAnnouncement
 }
+
+// 請優化以上程式碼，改善要點:
+
+// 重複出現的程式碼請寫一次，例如LALE_API_URL、ORGTREE_API_URL、token。
+// -提示axios interceptors。
+// 若是LALE_API_URL，token固定使用window.laleToken，若是ORGTREE_API_URL，token固定使用window.afToekn，不用傳入參數的方式。
+// 格式統一，return、傳入參數…。
+// 可參考vue-cli範本的/src/api/sample.js，新增一js檔實作。
+// 結果在00.js
