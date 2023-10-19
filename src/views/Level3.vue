@@ -1,8 +1,22 @@
-<script setup>
-</script>
 
 <template>
-  <div></div>
+  <h1>{{ reverseName }}</h1>
+  <h1>
+    {{ name.split('').reverse().join('') }}
+  </h1>
 </template>
 
-<style scoped lang="scss"></style>
+<script>
+  export default {
+    data() {
+      return {
+        name: '12345',
+      }
+    },
+    computed: {
+      reverseName() {
+        return this.name.split('').reverse().join('');
+      },
+    },
+  }
+</script>

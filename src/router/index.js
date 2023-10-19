@@ -26,6 +26,21 @@ const routes = [
 		name: 'Level3',
 		component: () => import('@/views/Level3.vue'),
 	},
+	{
+		path: '/level4',
+		name: 'Level4',
+		component: () => import('@/views/Level4.vue'),
+	},
+	{
+		path: '/project',
+		name: 'Project',
+		component: () => import('@/components/Project.vue'),
+	},
+	{
+		path: '/Phase',
+		name: 'Phase',
+		component: () => import('@/components/Phase.vue'),
+	},
 ];
 
 const router = createRouter({

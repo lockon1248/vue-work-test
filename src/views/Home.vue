@@ -4,7 +4,10 @@
 	<router-link to="/level1">Level1</router-link><br>
 	<router-link to="/homework2">homework2</router-link><br>
 	<router-link to="/level2">Level2</router-link><br>
-	<router-link to="/level3">Level3</router-link>
+	<router-link to="/level3">Level3</router-link><br>
+	<router-link to="/level4">Level4</router-link><br>
+	<router-link to="/project">cop</router-link><br>
+	<router-link to="/add">add</router-link><br>
 </template>
 
 <script setup>

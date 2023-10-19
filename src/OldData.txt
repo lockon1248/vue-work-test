@@ -1,0 +1,115 @@
+		// async savePhaseStartDate(phase) {
+		// 	try {
+		// 		const response = await apiPutPhaseData(
+		// 			JSON.stringify({
+		// 				phaseId: phase.phaseId,
+		// 				field: 'START_DATE',
+		// 				value: phase.startDate,
+		// 			})
+		// 		);
+		// 		console.log('项目数据已修改:', response);
+		// 	} catch (error) {
+		// 		console.error('修改项目数据失败:', error);
+		// 	}
+		// },
+
+
+		// async savePhaseEndDate(phase) {
+		// 	try {
+		// 		const response = await apiPutPhaseData(
+		// 			JSON.stringify({
+		// 				phaseId: phase.phaseId,
+		// 				field: 'END_DATE',
+		// 				value: phase.endDate,
+		// 			})
+		// 		);
+		// 		console.log('项目数据已修改:', response);
+		// 	} catch (error) {
+		// 		console.error('修改项目数据失败:', error);
+		// 	}
+		// },
+
+		// async SavePhaseName(phase) {
+		// 	console.log(phase);
+		// 	try {
+		// 		const response = await apiPutPhaseData(JSON.stringify({
+		// 			phaseId: phase.phaseId,
+		// 			field: 'NAME',
+		// 			value: phase.name,
+		// 		}));
+		// 		console.log('项目数据已修改:', response);
+		// 	} catch (error) {
+		// 		console.error('修改项目数据失败:', error);
+		// 	}
+		// },
+
+		// debounceSavePhaseName: _.debounce(async (phase) => {
+		// 	try {
+		// 		const savePhase = {
+		// 			phaseId: phase.phaseId,
+		// 			field: 'NAME',
+		// 			value: phase.name,
+		// 		};
+		// 		const response = await apiPutPhaseData(JSON.stringify(savePhase));
+		// 		console.log('项目数据已修改:', response);
+		// 	} catch (error) {
+		// 		console.error('修改项目数据失败:', error);
+		// 	}
+		// }, 2000),
+
+
+		// async deletePhaseName(phase) {
+		// 	try {
+		// 		const response = await apiPutPhaseData({
+		// 			phaseId: phase.phaseId,
+		// 			field: 'IS_DELETED',
+		// 			value: true,
+		// 		});
+		// 		console.log(response);
+		// 		if (response.status === 200) {
+		// 			console.log('项目数据已删除:', response);
+		// 			const index = this.phaseList.findIndex((item) => item.phaseId === phase.phaseId);
+		// 			if (index !== -1) {
+		// 				this.phaseList.splice(index, 1);
+		// 			}
+		// 		}
+		// 	} catch (error) {
+		// 		console.error('删除项目数据失败:', error);
+		// 	}
+		// },
+
+		////////////////////////////project///////////////////////
+
+		// const saveProjectSelect = async (project) => {
+// 	console.log(project.memberList);
+// 	try {
+// 		const response = await apiPutProjectData(
+// 			JSON.stringify({
+// 				projectId: project.projectId,
+// 				field: 'MEMBER_LIST',
+// 				value: JSON.stringify(project.memberList),
+// 			})
+// 		);
+// 		console.log('项目数据已修改:', response);
+// 		console.log(saveProject);
+// 	} catch (error) {
+// 		console.error('修改项目数据失败:', error);
+// 	}
+// };
+
+
+// const deleteProjectName = async (project) => {
+// 	try {
+// 		const response = await apiPutProjectData({
+// 			projectId: project.projectId,
+// 			field: 'IS_DELETED',
+// 			value: true,
+// 		});
+// 		if (response.status === 200) {
+// 			emit('deleteProject', project);
+// 			console.log('项目数据已删除:', response);
+// 		}
+// 	} catch (error) {
+// 		console.error('删除项目数据失败:', error);
+// 	}
+// };

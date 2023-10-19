@@ -6,7 +6,10 @@ async function ConnectionData() {
 	try {
 		const response = await axios.get('/api/figma/viewFile.json');
 		console.log(response);
+		console.log(typeof response)
 		const newData = response.data;
+		console.log(newData);
+		console.log(typeof newData);
 		const divMap = {};
 		const depMap = {};
 		newData.forEach((item) => {
@@ -16,43 +19,14 @@ async function ConnectionData() {
 			});
 		});
 		console.log(divMap);
+		console.log(typeof divMap)
 		console.log(depMap);
+		console.log(typeof depMap)
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-// async function ConnectionData() {
-//   try {
-//     const response = await axios.get('/api/figma/viewFile.json');
-//     const newData = response.data;
-
-//     const divMap = {};
-//     const depMap = {};
-
-//     newData.forEach((item) => { // 将 division 改为 item
-//       const divId = item.divId;
-//       const depFileRep = {};
-
-//       item.depFileRep.forEach((department) => {
-//         const depId = department.depId;
-
-//         // 在 depMap 中动态创建 depId 条目
-//         depMap[depId] = department.vwFlFile;
-//       });
-
-//       divMap[divId] = {
-//         depFileRep,
-//         ...item,
-//       };
-//     });
-
-//     console.log(divMap);
-//     console.log(depMap);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
 
 onMounted(() => {
 	ConnectionData();
