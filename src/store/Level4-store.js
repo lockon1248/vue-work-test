@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { apiGetPhaseData, apiPostPhaseData, apiPutPhaseData } from '@/api/level4.js';
-export const useAddStore = defineStore('Add', {
+export const usePhaseStore = defineStore('phase', {
 	state: () => {
 		return {
 			phaseList: [],
@@ -18,7 +18,6 @@ export const useAddStore = defineStore('Add', {
 					}
 					phaseDataMap[projectId].push(item);
 				});
-				console.log(phaseDataMap);
 				return phaseDataMap;
 			} catch (error) {
 				console.error(error);
@@ -26,13 +25,14 @@ export const useAddStore = defineStore('Add', {
 			}
 		},
 	},
-
 	actions: {
 		async getPhaseData() {
 			try {
 				const response = await apiGetPhaseData();
+				console.log(response);
 				if (response.data && response.data.data) {
 					this.phaseList = response.data.data;
+					console.log(this.phaseList);
 				} else {
 					console.log('没有資料');
 				}
@@ -42,8 +42,7 @@ export const useAddStore = defineStore('Add', {
 			}
 		},
 
-		async addPhaseName(project) {
-			console.log(project);
+		async addPhase(project) {
 			try {
 				const phaseData = {
 					phaseId: 'NEW_PHASE',
@@ -63,8 +62,7 @@ export const useAddStore = defineStore('Add', {
 			}
 		},
 
-		async SavePhase(phase, updateField) {
-			console.log(phase, updateField);
+		async editPhase(phase, updateField) {
 			try {
 				if (updateField === 'IS_DELETED') {
 					const response = await apiPutPhaseData({

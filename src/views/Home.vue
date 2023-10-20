@@ -7,13 +7,13 @@
 	<router-link to="/level3">Level3</router-link><br>
 	<router-link to="/level4">Level4</router-link><br>
 	<router-link to="/project">cop</router-link><br>
-	<router-link to="/add">add</router-link><br>
+	<router-link to="/phase">phase</router-link><br>
+	<router-link to="/test">test</router-link><br>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import HomeItem from '@/components/HomeItem.vue';
-
 import { useSampleStore } from '@/store/sampleStore.js';
 import { apiGetSampleData } from '@/api/sample.js';
 

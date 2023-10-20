@@ -27,6 +27,11 @@ const routes = [
 		component: () => import('@/views/Level3.vue'),
 	},
 	{
+		path: '/test',
+		name: 'Test',
+		component: () => import('@/views/Test.vue'),
+	},
+	{
 		path: '/level4',
 		name: 'Level4',
 		component: () => import('@/views/Level4.vue'),

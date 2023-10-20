@@ -1,6 +1,6 @@
 <template>
 	<div class="new-project">
-		<lale-input placeholder="請輸入Project名稱" class="project-name" style="width: 100%" v-model="project.name" @input="debounceSaveProject('NAME')" @blur="saveProject('NAME')" />
+		<lale-input placeholder="請輸入Project名稱" class="project-name" style="width: 100%" v-model="project.name" @input="debounceEditProject('NAME')" @blur="editProject('NAME')" />
 		<i class="fas fa-user-plus"></i>
 		<a-select
 			mode="tags"
@@ -9,7 +9,7 @@
 			placeholder="新增成員"
 			:options="memberData"
 			v-model:value="project.memberList"
-			@change="saveProject('MEMBER_LIST')"
+			@change="editProject('MEMBER_LIST')"
 		></a-select>
 		<div class="arrow">
 			<i
@@ -34,17 +34,17 @@
 				<a class="ant-dropdown-link" @click.prevent> <i class="fas fa-ellipsis-v"></i></a>
 				<template #overlay>
 					<lale-menu>
-						<lale-menu-item key="1" @click="saveProject('IS_DELETED')">delete</lale-menu-item>
+						<lale-menu-item key="1" @click="editProject('IS_DELETED')">delete</lale-menu-item>
 					</lale-menu>
 				</template>
 			</lale-dropdown>
 		</div>
 	</div>
 	<lale-collapse-transition>
-		<div class="show-block" v-if="isOpen">
+		<div class="show-control" v-if="isOpen">
 			<div class="phase-block">
-				<Phase v-for="phase in AddStore.getPhaseDataMap[project.projectId]" :key="phase.phaseId" :data="phase" />
-				<div class="add-block" @click="AddStore.addPhaseName(project)">
+				<phase v-for="phase in phaseStore.getPhaseDataMap[project.projectId]" :key="phase.phaseId" :data="phase" />
+				<div class="add-new-block" @click="phaseStore.addPhase(project)">
 					<i class="fas fa-plus"></i>
 					<p>新增階段</p>
 				</div>
@@ -54,11 +54,11 @@
 </template>
 <script setup>
 import { reactive, ref } from 'vue';
-import Phase from '@/components/Phase.vue';
+import phase from '@/components/Phase.vue';
 import { apiPutProjectData } from '@/api/level4.js';
-import { useAddStore } from '@/store/Level4-store.js';
+import { usePhaseStore } from '@/store/Level4-store.js';
 const emit = defineEmits(['deleteProject']);
-const AddStore = useAddStore();
+const phaseStore = usePhaseStore();
 const showSettings = reactive({});
 const isOpen = ref(false);
 const memberData = reactive([
@@ -85,7 +85,7 @@ const changeState = (projectId) => {
 const changeOpen = (projectId) => {
 	isOpen[projectId] = !isOpen[projectId];
 };
-const saveProject = async (updateField) => {
+const editProject = async (updateField) => {
 	let item = { ...project.value, memberList: JSON.stringify(project.value.memberList) };
 	try {
 		if (updateField === 'IS_DELETED') {
@@ -110,12 +110,13 @@ const saveProject = async (updateField) => {
 		console.error('修改项目数据失败:', error);
 	}
 };
-const debounceSaveProject = _.debounce(saveProject, 2000);
+const debounceEditProject = _.debounce(editProject, 2000);
 </script>
 <style scoped lang="scss">
 .new-project {
 	display: flex;
 	padding: 20px;
+	margin: 20px 0;
 	background-color: #e0e0e0;
 	.project-name {
 		width: 300px;
@@ -151,7 +152,7 @@ const debounceSaveProject = _.debounce(saveProject, 2000);
 .phase-block {
 	display: flex;
 	flex-wrap: wrap;
-	.add-block {
+	.add-new-block {
 		margin: 20px 0px 20px 0;
 		width: 300px;
 		height: 100px;
@@ -161,11 +162,11 @@ const debounceSaveProject = _.debounce(saveProject, 2000);
 		justify-content: center;
 		cursor: pointer;
 	}
-	.add-block p {
+	.add-new-block p {
 		display: flex;
 		justify-content: center;
 	}
-	.add-block i {
+	.add-new-block i {
 		display: flex;
 		justify-content: center;
 	}
