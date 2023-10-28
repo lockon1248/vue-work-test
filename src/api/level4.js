@@ -17,5 +17,7 @@ const apiPutProjectData = (dataForm) => baseReq.put('/Project', dataForm,);
 const apiGetPhaseData =()=>baseReq.get('/PhaseList/FRTEST/VERFRTEST/FRTEST')
 const apiPostPhaseData =(newPhase)=>baseReq.post('/Phase',newPhase)
 const apiPutPhaseData =(dataForm)=>baseReq.put('/Phase',dataForm)
-
-export { apiGetProjectData, apiPostProjectData,apiPutProjectData,apiGetPhaseData,apiPostPhaseData,apiPutPhaseData};
+const apiGetItemData =()=>baseReq.get('/ItemList/FRTEST/VERFRTEST/FRTEST')
+const apiPostItemData =(newItem)=>baseReq.post('/Item',newItem)
+const apiPutItemData =(dataForm)=>baseReq.put('/Item',dataForm)
+export { apiGetProjectData, apiPostProjectData,apiPutProjectData,apiGetPhaseData,apiPostPhaseData,apiPutPhaseData,apiPostItemData,apiPutItemData,apiGetItemData};

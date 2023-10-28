@@ -7,10 +7,11 @@ import 'ant-design-vue/dist/antd.css';
 import '@/assets/plugins/fontawesome-pro-5.13.0-web/css/all.min.css';
 import laleUI from 'lale-ui';
 import 'lale-ui/src/assets/css/main.scss';
-
+import * as echarts from 'echarts';
 const app = createApp(App);
+app.config.globalProperties.$echarts = echarts;
 app.use(createPinia());
 app.use(laleUI);
-app.use(router)
+app.use(router);
 app.use(Antd);
 app.mount('#app');

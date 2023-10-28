@@ -2,39 +2,17 @@
 	<div class="new-project">
 		<lale-input placeholder="請輸入Project名稱" class="project-name" style="width: 100%" v-model="project.name" @input="debounceEditProject('NAME')" @blur="editProject('NAME')" />
 		<i class="fas fa-user-plus"></i>
-		<a-select
-			mode="tags"
-			style="width: 500px"
-			:token-separators="[',']"
-			placeholder="新增成員"
-			:options="memberData"
-			v-model:value="project.memberList"
-			@change="editProject('MEMBER_LIST')"
-		></a-select>
+		<a-select mode="tags" style="width: 500px" placeholder="新增成員" :options="itemStore.memberData" v-model:value="project.memberList" @change="editProject('MEMBER_LIST')"></a-select>
 		<div class="arrow">
-			<i
-				class="fas fa-chevron-up"
-				@click="
-					changeState(project.projectId);
-					isOpen = !isOpen;
-				"
-				v-if="showSettings[project.projectId]"
-			></i>
-			<i
-				class="fas fa-chevron-down"
-				@click="
-					changeState(project.projectId);
-					isOpen = !isOpen;
-				"
-				v-else
-			></i>
+			<i :class="['fas', isOpen ? 'fa-chevron-up' : ' fa-chevron-down']" @click="changeOpen(project.projectId)"></i>
+			<!-- 三元運算子判斷，用一個陣列去提出相同的字，然後判斷是要出現哪一個icon -->
 		</div>
 		<div class="setting">
 			<lale-dropdown :trigger="['click']" class="delete-icon">
 				<a class="ant-dropdown-link" @click.prevent> <i class="fas fa-ellipsis-v"></i></a>
 				<template #overlay>
 					<lale-menu>
-						<lale-menu-item key="1" @click="editProject('IS_DELETED')">delete</lale-menu-item>
+						<lale-menu-item key="1" @click="deleteProject(project)">delete</lale-menu-item>
 					</lale-menu>
 				</template>
 			</lale-dropdown>
@@ -43,7 +21,7 @@
 	<lale-collapse-transition>
 		<div class="show-control" v-if="isOpen">
 			<div class="phase-block">
-				<phase v-for="phase in phaseStore.getPhaseDataMap[project.projectId]" :key="phase.phaseId" :data="phase" />
+				<Phase v-for="phase in phaseStore.getPhaseMap[project.projectId]" :key="phase.phaseId" :data="phase" />
 				<div class="add-new-block" @click="phaseStore.addPhase(project)">
 					<i class="fas fa-plus"></i>
 					<p>新增階段</p>
@@ -54,23 +32,14 @@
 </template>
 <script setup>
 import { reactive, ref } from 'vue';
-import phase from '@/components/Phase.vue';
+import Phase from '@/components/Phase.vue';
 import { apiPutProjectData } from '@/api/level4.js';
-import { usePhaseStore } from '@/store/Level4-store.js';
+import { usePhaseStore,useItemStore } from '@/store/level4-store.js';
 const emit = defineEmits(['deleteProject']);
 const phaseStore = usePhaseStore();
-const showSettings = reactive({});
+const itemStore = useItemStore();
+const showPhase = reactive({});
 const isOpen = ref(false);
-const memberData = reactive([
-	{
-		value: 'FRTEST',
-		label: 'FRTEST',
-	},
-	{
-		value: 'FR885',
-		label: 'Tim',
-	},
-]);
 const props = defineProps({
 	data: {
 		type: Object,
@@ -78,45 +47,37 @@ const props = defineProps({
 	},
 });
 const project = ref(props.data);
-const changeState = (projectId) => {
-	showSettings[projectId] = !showSettings[projectId];
-	changeOpen();
-};
 const changeOpen = (projectId) => {
-	isOpen[projectId] = !isOpen[projectId];
+	isOpen.value = !isOpen.value;
+	showPhase[projectId] = !showPhase[projectId];
 };
 const editProject = async (updateField) => {
 	let item = { ...project.value, memberList: JSON.stringify(project.value.memberList) };
 	try {
+		const response = await apiPutProjectData({
+			projectId: item.projectId,
+			field: updateField,
+			value: item[_.camelCase(updateField)],
+		});
+		console.log('项目数据已修改:', response);
 		if (updateField === 'IS_DELETED') {
-			const response = await apiPutProjectData({
-				phaseId: item.projectId,
-				field: updateField,
-				value: true,
-			});
-			if (response.status === 200) {
-				emit('deleteProject', item);
-				console.log('项目数据已删除:', response);
-			}
-		} else {
-			const response = await apiPutProjectData({
-				projectId: item.projectId,
-				field: updateField,
-				value: item[_.camelCase(updateField)],
-			});
-			console.log('项目数据已修改:', response);
+			emit('deleteProject', item.projectId);
 		}
 	} catch (error) {
 		console.error('修改项目数据失败:', error);
 	}
 };
 const debounceEditProject = _.debounce(editProject, 2000);
+const deleteProject = (project) => {
+	project.isDeleted = true; //先改為true
+	editProject('IS_DELETED');
+};
 </script>
 <style scoped lang="scss">
 .new-project {
 	display: flex;
 	padding: 20px;
-	margin: 20px 0;
+	margin: 20px 20px;
 	background-color: #e0e0e0;
 	.project-name {
 		width: 300px;

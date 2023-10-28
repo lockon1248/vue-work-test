@@ -1,30 +1,43 @@
 <template>
-	<div>
-		<lale-date-picker :disabled-date="disabledDate" v-model:value="value1"></lale-date-picker>
-		<lale-date-picker v-model:value="value2" :disabled-date="disabledDate2"></lale-date-picker>
-	</div>
+    <div></div>
+    <!-- <a-table :columns="columns" :data-source="data">
+        <template #headerCell="{ column }">
+            <template v-if="column.key === 'name'">
+                <span>
+                    <smile-outlined />
+                    Name
+                </span>
+            </template>
+        </template>
+        <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'name'">
+                <a>
+                    {{ record.name }}
+                </a>
+            </template>
+            <template v-else-if="column.key === 'tags'">
+                <span>
+                    <a-tag v-for="tag in record.tags" :key="tag" >
+                        {{ tag.toUpperCase() }}
+                    </a-tag>
+                </span>
+            </template>
+            <template v-else-if="column.key === 'action'">
+                <span>
+                    <a>Invite 一 {{ record.name }}</a>
+                    <a-divider type="vertical" />
+                    <a>Delete</a>
+                    <a-divider type="vertical" />
+                    <a class="ant-dropdown-link">
+                        More actions
+                        <down-outlined />
+                    </a>
+                </span>
+            </template>
+        </template>
+    </a-table> -->  
 </template>
+<script>
 
-<script setup>
-import { ref } from 'vue';
-const value1 = ref(dayjs());
-const value2 = ref(null);
-const disabledDate = (date) => {
-	const now = dayjs();
-	const selectedDate = dayjs(date);
-	/// 将 selectedDate 变量设置为 date 参数的值
-	if (selectedDate.isBefore(now, 'day')) {
-		return true;
-	}
-	return false;
-};
 
-const disabledDate2 = () => {
-	if (value1.value > value2.value) {
-		return false;
-	}
-	return true;
-};
-const a = dayjs().subtract(1, 'month').format('YYYY-MM-DD');
-console.log(a);
 </script>

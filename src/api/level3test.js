@@ -26,7 +26,7 @@ const getOrgTree = (companyId) => orgTreeReq.get(`/dau/org-tree/info`, { params:
 // 簡化掉多餘重複的url前綴並將method移到前面，header的token在阻攔器設定好了所以也不需要在這邊寫}
 
 // 獲取用戶所屬公司
-const getAllCompany = (headerafToken) => orgTreeReq.get(`/dau/org-tree/company-info`, { headers: { Authorization: `Bearer ${headerafToken}` } });
+const getAllCompany = () => orgTreeReq.get(`/dau/org-tree/company-info`);
 
 // 獲取組織所有人員
 const getAllMember = (id) => orgTreeReq.get(`/dau/org-tree/all-member/${id}`);

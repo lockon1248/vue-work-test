@@ -2,48 +2,53 @@
 	<div class="main-body">
 		<lale-button variant="primary" @click="addProject" class="add-new-button"> 新增專案 </lale-button>
 		<div class="new-project-block">
-			<project v-for="project in projectList" :key="project.projectId" :data="project" @deleteProject="deleteProject" />
+			<Project v-for="project in projectList" :key="project.projectId" :data="project" @deleteProject="deleteProject" />
 		</div>
 	</div>
 </template>
 <script setup>
-import project from '@/components/Project.vue';
 import { ref } from 'vue';
+import Project from '@/components/Project.vue';
+import { usePhaseStore } from '@/store/level4-store.js';
+import { useItemStore } from '@/store/level4-store.js';
 import { apiGetProjectData, apiPostProjectData } from '@/api/level4.js';
-const projectList = ref([]);
-import { usePhaseStore } from '@/store/Level4-store.js';
 const phaseStore = usePhaseStore();
-apiGetProjectData()
-	.then((response) => {
-		projectList.value = response.data.data;
+const itemStore = useItemStore();
+const projectList = ref([]);
+phaseStore.getPhaseData();
+itemStore.getItemData();
+class PROJECT { //物件導向寫法
+	constructor() {
+		this.projectId = `NEW_PRJ`;
+		this.productId = 'FRTEST';
+		this.versionId = 'VERFRTEST';
+		this.name = '';
+		this.startDate = '';
+		this.endDate = '';
+		this.memberList = ['FRTEST'];
+		this.isDeleted = false;
+		this.sort = 0;
+	}
+}
+apiGetProjectData().then((res) => {
+		projectList.value = res.data.data;
 	})
 	.catch((error) => {
 		console.error(error);
 	});
-phaseStore.getPhaseData()
 const addProject = async () => {
 	try {
-		const newProject = {
-			projectId: 'NEW_PRJ',
-			productId: 'FRTEST',
-			versionId: 'VERFRTEST',
-			name: '',
-			startDate: '',
-			endDate: '',
-			memberList: ['FRTEST'],
-			isDeleted: false,
-			sort: 0,
-		};
+		let newProject = new PROJECT();
 		newProject.memberList = JSON.stringify(newProject.memberList);
-		const response = await apiPostProjectData(JSON.stringify(newProject));
-		projectList.value.unshift(response.data.data.DATA); // 添加 newProject 到 projectList
-		console.log('項目數據已提交:', response);
+		const res = await apiPostProjectData(JSON.stringify(newProject));
+		projectList.value.unshift(res.data.data.DATA); // 添加 newProject 到 projectList
+		console.log('項目數據已提交:', res);
 	} catch (error) {
 		console.error('提交項目數據失敗:', error);
 	}
 };
-const deleteProject = (project) => {
-	const index = projectList.value.findIndex((item) => item.projectId === project.projectId);
+const deleteProject = (projectId) => {
+	const index = projectList.value.findIndex((item) => item.projectId === projectId);
 	if (index !== -1) {
 		projectList.value.splice(index, 1);
 	}
@@ -51,7 +56,8 @@ const deleteProject = (project) => {
 </script>
 <style scoped lang="scss">
 .main-body {
-	width: 1024px;
+	min-width: 800px;
+	max-width: 1280px;
 	margin: auto;
 	.add-new-button {
 		margin-top: 20px;

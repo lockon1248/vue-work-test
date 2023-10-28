@@ -9,6 +9,7 @@
 	<router-link to="/project">cop</router-link><br>
 	<router-link to="/phase">phase</router-link><br>
 	<router-link to="/test">test</router-link><br>
+	<router-link to="/item">item</router-link><br>
 </template>
 
 <script setup>
